@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shalomlife Reader</title>	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+    <link rel="icon" href="favicon.ico">
+	<link rel="shortcut icon" href="favicon.ico">	    
+	<link rel="apple-touch-icon" href="favicon.ico" sizes="57x57"> 
+	<link rel="apple-touch-icon" href="favicon.ico" sizes="114x114">
+	<link rel="apple-touch-icon" href="favicon.ico" sizes="72x72">
+	<link rel="apple-touch-icon" sizes="80x80" href="favicon.ico">
+	<link rel="apple-touch-icon-precomposed" sizes="android-only" href="favicon.ico">
+	
+	<link rel="stylesheet" href="js/jquery.mobile-1.1.0.min.css" />
+	<link rel="stylesheet" href="css/mobile.css" />
+    <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/childbrowser.js"></script>
+	<script type="text/javascript" src="js/jquery.min.1.7.0.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile-1.1.0.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/main.js"></script> 
+	
+	<script type="text/javascript" charset="utf-8">
+		var	newsCurrentPage	=	1;var	businessCurrentPage	=	1;var	cultureCurrentPage	=	1;
+		var	healthCurrentPage	=	1;var	homeCurrentPage	=	1;var	searchCurrentPage	=	1;
+		var	maxItemPerPage		=	5; var	searchUrl	=	'http://dd.shalomlife.com/mobilesearch/';
+		var	rSSPageNumber		=	50/maxItemPerPage;
+		$('#home' ).live( 'pageinit',function(event){loadRss('home','content',1); });
+    	$('#pageNews' ).live( 'pageinit',function(event){ loadRss('news','contentNews',1); });
+    	$('#pageCulture' ).live( 'pageinit',function(event){ loadRss('culture','contentCul',1); });
+    	$('#pageHealth' ).live( 'pageinit',function(event){ loadRss('health','contentHealth',1); });     
+    	$('#pageBusiness' ).live( 'pageinit',function(event){ loadRss('business','contentBus',1); });
+    	    	
+//    	$('a.newslettter').live('vclick',function(){ window.plugins.childBrowser.showWebPage(this.href, { showLocationBar: false }); return false});
+		$(document).ready(function() {
+			$('a.articleView').live('vclick',function(){ getArticleContent(this); return false});
+	    	$('a.next').live('vclick',function(){ nagivationPaging('next', this); return false});
+	    	$('a.prev').live('vclick',function(){ nagivationPaging('prev', this); return false});
+			
+			$('a.snext').live('vclick',function(){ searchNavigation('next',this); return false});
+	    	$('a.sprev').live('vclick',function(){ searchNavigation('prev',this); return false});
+			
+			$("form#newsletterForm").submit(function () {  submitNewsletter(); return false; });			
+			$('form.searchForm').bind('submit',function(event){ 				
+				submitSearch(this,1);	return false;
+			});		  
+		 });
+    </script>
+  </head>
+  <body>
+    <div data-role="page" id="home" >    	
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>            
+            <h3><img src="img/logoSL.png"/></h3>            
+        	<form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar" style="100%">
+				<ul>					
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>					
+				</ul>
+			</div>
+        </div>
+        <div data-role="content">                	
+			<div class="content-primary" id="content"></div>
+        </div>      
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left" data-mini="true" data-inline="true" class="prev" style="display:none;">Prev</a>
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-r" data-iconpos="right" data-mini="true" data-inline="true" class="next" style="float:right;">Next</a>
+		</div>
+    </div>    
+    <div data-role="page" id="pageNews" >    
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>
+					<li style="width:18%"><a href="#pageNews" data-theme="b"  class="ui-btn-active"  data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>
+				</ul>
+			</div>
+        </div>
+        <div data-role="content">                	
+			<div class="content-primary" id="contentNews"></div>
+        </div>        
+        
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left" data-mini="true" data-inline="true" class="prev" style="display:none;">Prev</a>
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-r" data-iconpos="right" data-mini="true" data-inline="true" class="next" style="float:right;">Next</a>
+		</div>
+    </div>
+    <div data-role="page" id="pageBusiness" >    	
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness"  data-theme="b" class="ui-btn-active" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>
+				</ul>
+			</div>
+        </div>
+        <div data-role="content">                	
+			<div class="content-primary" id="contentBus"></div>
+        </div>       
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left" data-mini="true" data-inline="true" class="prev" style="display:none;">Prev</a>
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-r" data-iconpos="right" data-mini="true" data-inline="true" class="next" style="float:right;">Next</a>
+		</div>
+    </div>
+    <div data-role="page" id="pageCulture" >    	
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture"   data-theme="b" class="ui-btn-active"  data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>
+				</ul>
+			</div>
+        </div>
+        <div data-role="content">                	
+			<div class="content-primary" id="contentCul"></div>
+        </div>             
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left" data-mini="true" data-inline="true" class="prev" style="display:none;">Prev</a>
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-r" data-iconpos="right" data-mini="true" data-inline="true" class="next" style="float:right;">Next</a>
+		</div>
+    </div>
+    <div data-role="page" id="pageHealth" >    	
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth"  data-theme="b"  class="ui-btn-active"  data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>
+				</ul>
+			</div>
+        </div>
+        <div data-role="content">
+			<div class="content-primary" id="contentHealth"></div>
+        </div>
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left" data-mini="true" data-inline="true" class="prev" style="display:none;">Prev</a>
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-r" data-iconpos="right" data-mini="true" data-inline="true" class="next" style="float:right;">Next</a>
+		</div>
+    </div>
+    
+    <div data-role="page" id="pageSearch" >    	
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm" >		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>
+				</ul>
+			</div>
+        </div>
+        <div data-role="content">
+			<div class="content-primary" id="contentSearch"></div>
+        </div>
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-l" data-iconpos="left" data-mini="true" data-inline="true" class="sprev" style="display:none;">Prev</a>
+			<a href="#" data-role="button" data-theme="b" data-icon="arrow-r" data-iconpos="right" data-mini="true" data-inline="true" class="snext" style="float:right;">Next</a>
+		</div>
+    </div>
+    
+    <div data-role="page" id="newsletter" >    	
+        <div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">
+            <a href="#home" data-transition="none" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-hover-b ui-btn-up-b" data-icon="arrow-l" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-arrow-l ui-icon-shadow">&nbsp;</span></span></a>
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>				
+					<li style="width:21%"><a href="#newsletter"   data-theme="b"  class="ui-btn-active" data-transition="none">Newsletter</a></li>			
+				</ul>
+			</div>
+        </div>
+        <div data-role="content" data-theme="b">
+			<div class="content-primary" id="contentNewsletter">
+			<form method="post" id="newsletterForm" >
+				<div data-role="fieldcontain" class="ui-hide-label">
+					<label for="username">Your name:</label>
+					<input type="text" name="fname" id="fname" class="required" value="" placeholder="Your name" required/>
+				</div>
+				<div data-role="fieldcontain" class="ui-hide-label">
+					<label for="username">Your email:</label>
+					<input type="email" name="email_addr" id="email_addr" class="required"  value="" placeholder="Your email" required/>
+				</div>
+				<input type="hidden" name="YII_CSRF_TOKEN" id="YII_CSRF_TOKEN" value=""/>
+				<input type="submit" id="submit" value="Submit" />
+			</form>
+			</div>
+        </div>
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">&nbsp;</div>
+    </div>
+   
+    <div data-role="page" id="article" data-add-back-btn="true" data-back-btn-text="Back" data-back-btn-theme="b">    	
+    	<div data-theme="c" data-role="header" data-position="fixed" style="height:80px" class="header">            
+            <h3 ><img src="img/logoSL.png"/></h3>
+            <form method="post" class="searchForm">		    
+		    	<input type="search" name="searchText" value="" data-icon="search" data-iconpos="right" data-mini="true" data-inline="true"/>
+		    </form>
+			<div data-role="navbar"  data-iconpos="bottom"  class="menuBar">
+				<ul>					
+					<li style="width:18%"><a href="#pageNews" data-transition="none"  >News</a></li>
+					<li style="width:21%"><a href="#pageBusiness" data-transition="none">Business</a></li>
+					<li style="width:21%"><a href="#pageCulture" data-transition="none">Culture</a></li>
+					<li style="width:19%"><a href="#pageHealth" data-transition="none">Health</a></li>
+					<li style="width:21%"><a href="#newsletter" data-transition="none">Newsletter</a></li>
+				</ul>
+			</div>
+        </div>
+        <div data-role="content" class="articleView">                	
+			<div class="content-primary-view" id="articleView"></div>
+        </div>        
+        <div data-theme="c" data-role="footer" style="height:30px;float:left;width:100%;">&nbsp;</div>
+    </div>	
+  </body>
+</html>

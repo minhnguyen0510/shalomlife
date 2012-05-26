@@ -1,0 +1,23 @@
+.content{width:100%;float:left;display:block;}
+#content ul li{ height:70px;}
+#content ul li a:first-child{padding-left:110px}
+#content ul { margin: 0;}
+#content {  padding: 0 5px;}
+#content ul li:first-child{height:20px}
+.text-align-center { text-align: center; }
+.text-align-right { text-align: right; }
+.menuBar .ui-grid-d li a{ height: 38px;}
+.articleView p,.articleView h3 {padding-left:10px;}
+p.title{font-size:16px;font-weight:bold; text-align:left;}
+.ui-li-thumb{max-width: 100px;}
+.ui-li-has-alt .ui-btn-inner a.ui-link-inherit{padding-left:110px;padding-right:50px;}
+.ui-header a.ui-btn-left{margin-top:2px}
+.ui-header h3{height:20px !important ;width:100%; margin:0.6em 0 0.8em !important;}
+.ui-li-heading {white-space: normal !important; height:35px !important;}
+#content ul li .ui-li-desc{white-space: normal !important; }
+.ui-mobile a img{margin-top:6px;}
+.searchForm{float: right; height: 18px; margin: 0; position: absolute; right: 2px; top: 2px; width: 140px;}
+.ui-navbar-noicons li .ui-btn .ui-btn-inner, .ui-navbar-noicons .ui-navbar-toggle .ui-btn-inner{padding:0.8em 0 0.9em;min-width:40px}
+.ui-navbar ul, .ui-navbar-expanded ul, .ui-grid-d .ui-block-a, .ui-grid-d .ui-block-a a{min-width:20px;}
+
+
