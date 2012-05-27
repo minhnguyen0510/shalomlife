@@ -2,16 +2,22 @@ function loadRss(type,contentId, page) {
 	page	=	((page < 1) ? 1 : ((page > rSSPageNumber) ? rSSPageNumber : page));
 	$.mobile.showPageLoadingMsg();
 	//if($.trim($('#'+contentId).html()) == ''){
+		headerText	=	'';
 		if(type	== 'news'){
 			urlRss	=	'http://dd.shalomlife.com/news/rss/';
+			headerText	=	'News';
 		}else if(type	== 'business'){
 			urlRss	=	'http://dd.shalomlife.com/business/rss/';
+			headerText	=	'Business';
 		}else if(type	== 'culture'){
 			urlRss	=	'http://dd.shalomlife.com/culture/rss/';
+			headerText	=	'Culture';
 		}else if(type	== 'health'){
 			urlRss	=	'http://dd.shalomlife.com/health/rss/';
+			headerText	=	'Health';
 		}else{
 			urlRss	=	'http://dd.shalomlife.com/rss/';
+			headerText	=	'Stories';
 		}
 		parent	=	$('#'+contentId).parent();
 		parent.empty().html('<div class="content-primary" id="'+contentId+'"></div>');
@@ -19,7 +25,7 @@ function loadRss(type,contentId, page) {
 		$.post(urlRss, {}, function(res, code) {
 			var xml 	= 	$(res);
 			var items 	= 	xml.find("item");				
-			dataAll		=	'<li data-role="list-divider" role="heading">Lastest news</li>';
+			dataAll		=	'<li data-role="list-divider" role="heading">Lastest '+headerText+'</li>';
 			beginItem	=	(page-1)*maxItemPerPage;	endItem		=	page*maxItemPerPage;
 			countItem	=	0;		
 			$.each(items, function(i, v) {
