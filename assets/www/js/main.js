@@ -4,19 +4,19 @@ function loadRss(type,contentId, page) {
 	//if($.trim($('#'+contentId).html()) == ''){
 		headerText	=	'';
 		if(type	== 'news'){
-			urlRss	=	'http://dd.shalomlife.com/news/rss/';
+			urlRss	=	'http://dd.shalomlife.com/amobile/default/news/';
 			headerText	=	'News';
 		}else if(type	== 'business'){
-			urlRss	=	'http://dd.shalomlife.com/business/rss/';
+			urlRss	=	'http://dd.shalomlife.com/amobile/default/business/';
 			headerText	=	'Business';
 		}else if(type	== 'culture'){
-			urlRss	=	'http://dd.shalomlife.com/culture/rss/';
+			urlRss	=	'http://dd.shalomlife.com/amobile/default/culture/';
 			headerText	=	'Culture';
 		}else if(type	== 'health'){
-			urlRss	=	'http://dd.shalomlife.com/health/rss/';
+			urlRss	=	'http://dd.shalomlife.com/amobile/default/health/';
 			headerText	=	'Health';
 		}else{
-			urlRss	=	'http://dd.shalomlife.com/rss/';
+			urlRss	=	'http://dd.shalomlife.com/amobile/default/home/';
 			headerText	=	'Stories';
 		}
 		parent	=	$('#'+contentId).parent();
@@ -125,7 +125,7 @@ function submitNewsletter(){
 	$.mobile.showPageLoadingMsg();
 	dataSend	=	$( "form#newsletterForm" ).serialize ();				
 	$.ajax({ 
-		url: "http://dd.shalomlife.com/site/subscribeMobile/", 
+		url: "http://dd.shalomlife.com/amobile/default/subscribe/", 
 		type:  "GET", 					
 		data:  dataSend, 
 		dataType:  "json",
